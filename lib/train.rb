@@ -40,6 +40,7 @@ class Train
   end
 
   def delete
+    DB.exec("DELETE FROM stops WHERE train_id = #{@id};")
     DB.exec("DELETE FROM trains WHERE id = #{@id};")
   end
 
@@ -68,6 +69,16 @@ class Train
       cities_array.push(City.new({:name => name, :id => city_id}))
     end
     cities_array
+  end
+
+  def get_times
+    cities = self.cities
+    times = []
+    cities.each do |city|
+      time = DB.exec("SELECT stop_time FROM stops WHERE id = #{city.id};")
+      times.push(time)
+    end
+    times
   end
 
 end

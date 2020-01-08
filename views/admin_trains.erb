@@ -1,0 +1,15 @@
+<h3>Trains (Admin)</h3>
+
+<% if @trains.any? %>
+  <ul>
+    <% @trains.sort_by(&:name).each do |train| %>
+    <li><a href="/train/<%= train.id %>/admin"><%= train.name %></a></li>
+    <% end %>
+  </ul>
+  <% else %>
+  <p>There are currently no trains to display.</p>
+<% end %>
+
+<a href="/trains/new">Add a New Train</a><br>
+
+<button type="button" method="post" name="clear_db" class="scary">ERASE ALL TRAINS</button>

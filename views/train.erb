@@ -1,0 +1,11 @@
+<h3><%= @train.name %></h3>
+<% if @cities.any? %>
+  <ul>
+    <% @cities.sort_by(&:name).each do |city| %>
+    <% time = DB.exec("SELECT stop_time FROM stops WHERE city_id = #{city.id} AND train_id = #{@train.id};") %>
+    <li><a href="/cities/<%= city.id %>"><%= city.name %><%= time %></a></li>
+    <% end %>
+  </ul>
+  <% else %>
+  <p>There are currently no cities to display.</p>
+  <% end %>

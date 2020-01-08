@@ -1,0 +1,11 @@
+<h3>Trains</h3>
+
+<% if @trains.any? %>
+  <ul>
+    <% @trains.sort_by(&:name).each do |train| %>
+    <li><a href="/trains/<%= train.id %>"><%= train.name %></a></li>
+    <% end %>
+  </ul>
+  <% else %>
+  <p>There are currently no trains to display.</p>
+  <% end %>

@@ -40,6 +40,7 @@ class City
   end
 
   def delete
+    DB.exec("DELETE FROM stops WHERE city_id = #{@id};")
     DB.exec("DELETE FROM cities WHERE id = #{@id};")
   end
 
