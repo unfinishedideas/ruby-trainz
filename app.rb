@@ -33,6 +33,19 @@ get('/cities') do
 end
 
 ############################################# Admin!
+get '/password' do
+  erb(:password)
+end
+
+post '/admin' do
+  input = params[:password]
+  if input === "chickens"
+    erb(:admin)
+  else
+    erb(:access_denied)
+  end
+end
+
 get('/admin') do
   erb(:admin)
 end
@@ -83,7 +96,7 @@ get('/cities/admin') do
   erb(:admin_cities)
 end
 
-get('cities/new') do
+get('/cities/new') do
   erb(:admin_create_city)
 end
 
