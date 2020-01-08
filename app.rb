@@ -13,41 +13,38 @@ get('/') do
   erb(:homepage)
 end
 
-get('/cities') do
-  @cities = City.all
-  erb(:cities)
-end
-
+############################################# User
+############################## Trains
 get('/trains') do
   @trains = Train.all
   erb(:trains)
 end
 
-get('/trains/new') do
-  erb(:admin_create_train)
+get '/train/:id' do
+  @train = Train.find(params[:id])
+  @cities = @train.cities
+  erb(:train)
 end
 
-get('/cities/admin') do
+############################## Cities
+get('/cities') do
   @cities = City.all
-  erb(:admin_cities)
+  erb(:cities)
+end
+
+############################################# Admin!
+get('/admin') do
+  erb(:admin)
+end
+
+############################## Trains
+get('/trains/new') do
+  erb(:admin_create_train)
 end
 
 get('/trains/admin') do
   @trains = Train.all
   erb(:admin_trains)
-end
-
-get('cities/:id/edit') do
-  @cities = City.all
-  erb(:admin_update_city)
-end
-
-get('cities/new') do
-  erb(:admin_create_city)
-end
-
-get('/admin') do
-  erb(:admin)
 end
 
 post '/trains/admin' do
@@ -61,12 +58,6 @@ end
 post('/admin/trains') do
   Train.clear()
   erb(:admin_trains)
-end
-
-get '/train/:id' do
-  @train = Train.find(params[:id])
-  @cities = @train.cities
-  erb(:train)
 end
 
 get '/train/:id/admin' do
@@ -84,4 +75,45 @@ post '/train/:id/admin' do
   @train.update({:name => @train.name, :city_name => name, :stop_time => time})
   @cities = @train.cities
   erb(:admin_train)
+end
+
+############################## Cities
+get('/cities/admin') do
+  @cities = City.all
+  erb(:admin_cities)
+end
+
+get('cities/new') do
+  erb(:admin_create_city)
+end
+
+post '/cities/admin' do
+  name = params[:city_name]
+  @city = City.new({:id => nil, :name => name})
+  @city.save()
+  @cities = City.all()
+  erb(:admin_cities)
+end
+
+get '/city/:id' do
+  @city = City.find(params[:id])
+  @trains = @city.trains
+  erb(:city)
+end
+
+get '/city/:id/admin' do
+  @city = City.find(params[:id])
+  @trains = @city.trains
+  erb(:admin_city)
+end
+
+post '/city/:id/admin' do
+  name = params[:train_name]
+  time = (params[:time_input] + ":00")
+  train = Train.new({:id => nil, :name => name})
+  train.save()
+  @city = City.find(params[:id])
+  @city.update({:name => @city.name, :train_name => name, :stop_time => time})
+  @trains = @city.trains
+  erb(:admin_city)
 end

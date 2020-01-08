@@ -1,9 +1,9 @@
-<h3><%= @train.name %> (Admin)</h3>
+<h3>Train: <%= @train.name %> (Admin)</h3>
 <% if @cities.any? %>
   <ul>
     <% @cities.sort_by(&:name).each do |city| %>
     <% time = DB.exec("SELECT stop_time FROM stops WHERE city_id = #{city.id} AND train_id = #{@train.id};") %>
-    <li><a href="/cities/<%= city.id %>/admin"><%= city.name %></a><p>Time Due: <%= time.first.first[1] %></p></li>
+    <li><a href="/city/<%= city.id %>/admin"><%= city.name %></a><p>Time Due: <%= time.first.first[1] %></p></li>
     <% end %>
   </ul>
   <% else %>

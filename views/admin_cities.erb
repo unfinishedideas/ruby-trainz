@@ -3,7 +3,7 @@
 <% if @cities.any? %>
   <ul>
     <% @cities.sort_by(&:name).each do |city| %>
-    <li><a href="/cities/<%= city.id %>/edit"><%= city.name %></a></li>
+    <li><a href="/city/<%= city.id %>/admin"><%= city.name %></a></li>
     <% end %>
   </ul>
   <% else %>
