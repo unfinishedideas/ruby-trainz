@@ -2,8 +2,12 @@
 <% if @trains.any? %>
   <ul>
     <% @trains.sort_by(&:name).each do |train| %>
-    <% time = DB.exec("SELECT stop_time FROM stops WHERE train_id = #{train.id} AND city_id = #{@city.id};") %>
-    <li><a href="/train/<%= train.id %>/admin"><%= train.name %></a><p>Time Due: <%= time.first.first[1] %></p></li>
+    <li><a href="/train/<%= train.id %>/admin"><%= train.name %></a>
+      <% times = DB.exec("SELECT stop_time FROM stops WHERE train_id = #{train.id} AND city_id = #{@city.id};") %>
+      <% times.each do |time| %>
+      <p>Time Due: <%= time.first[1] %></p>
+      <% end %>
+    </li>
     <% end %>
   </ul>
   <% else %>

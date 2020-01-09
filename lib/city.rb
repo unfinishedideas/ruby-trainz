@@ -1,3 +1,5 @@
+require 'pry'
+
 class City
   attr_reader :id
   attr_accessor :name
@@ -61,14 +63,37 @@ class City
 
   def trains
     trains_array = []
+    trains_so_far = []
     results = DB.exec("SELECT train_id FROM stops WHERE city_id = #{@id};")
     results.each() do |result|
       train_id = result.fetch("train_id").to_i()
       train = DB.exec("SELECT * FROM trains WHERE id = #{train_id};")
       name = train.first().fetch("name")
-      trains_array.push(Train.new({:name => name, :id => train_id}))
+      trains_so_far.push(Train.new({:name => name, :id => train_id}))
+
+      trains_so_far.each() do |train|
+        if train.id == result["train_id"].to_i
+          trains_array.push(Train.new({:name => name, :id => train_id}))
+        end
+      end
+      # if trains_so_far.none? {|train| train.id == result["train_id"].to_i}
+      #   binding.pry
+      #   trains_array.push(Train.new({:name => name, :id => train_id}))
+      # end
     end
-    trains_array
+    x = 1
+    # y = trains_array.length
+    trains_array_2 = []
+    while x < trains_array.length
+      first_train = trains_array[x - 1]
+      if first_train.id != trains_array[x].id
+        trains_array_2.push(trains_array[x])
+      end
+      x += 1
+    end
+
+    trains_array_2
+    # binding.pry
   end
 
 end

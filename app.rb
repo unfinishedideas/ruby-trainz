@@ -4,10 +4,10 @@ require('./lib/train')
 require('./lib/city')
 require('pry')
 require("pg")
+also_reload('lib/**/*.rb')
 
 DB = PG.connect({:dbname => "train_station"})
 
-# also_reload('lib/**/*.rb')
 
 get('/') do
   erb(:homepage)
@@ -30,6 +30,12 @@ end
 get('/cities') do
   @cities = City.all
   erb(:cities)
+end
+
+get '/city/:id' do
+  @city = City.find(params[:id])
+  @trains = @city.trains
+  erb(:city)
 end
 
 ############################################# Admin!
@@ -82,8 +88,6 @@ end
 post '/train/:id/admin' do
   name = params[:city_name]
   time = (params[:time_input] + ":00")
-  city = City.new({:id => nil, :name => name})
-  city.save()
   @train = Train.find(params[:id])
   @train.update({:name => @train.name, :city_name => name, :stop_time => time})
   @cities = @train.cities
@@ -108,23 +112,16 @@ post '/cities/admin' do
   erb(:admin_cities)
 end
 
-get '/city/:id' do
-  @city = City.find(params[:id])
-  @trains = @city.trains
-  erb(:city)
-end
-
 get '/city/:id/admin' do
   @city = City.find(params[:id])
   @trains = @city.trains
+  # binding.pry
   erb(:admin_city)
 end
 
 post '/city/:id/admin' do
   name = params[:train_name]
   time = (params[:time_input] + ":00")
-  train = Train.new({:id => nil, :name => name})
-  train.save()
   @city = City.find(params[:id])
   @city.update({:name => @city.name, :train_name => name, :stop_time => time})
   @trains = @city.trains
