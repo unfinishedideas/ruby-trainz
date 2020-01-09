@@ -1,22 +1,33 @@
 <h3>Train: <%= @train.name %> (Admin)</h3>
 <% if @cities.any? %>
-  <ul>
-    <% @cities.sort_by(&:name).each do |city| %>
-    <% time = DB.exec("SELECT stop_time FROM stops WHERE city_id = #{city.id} AND train_id = #{@train.id};") %>
-    <li><a href="/city/<%= city.id %>/admin"><%= city.name %></a><p>Time Due: <%= time.first.first[1] %></p></li>
+<ul>
+  <% @cities.sort_by(&:name).each do |city| %>
+  <% times = DB.exec("SELECT stop_time FROM stops WHERE city_id = #{city.id} AND train_id = #{@train.id};") %>
+  <li><a href="/city/<%= city.id %>/admin"><%= city.name %></a>
+    <% times.each do |time| %>
+    <p>Time Due: <%= time.first[1] %></p>
     <% end %>
-  </ul>
-  <% else %>
-  <p>There are currently no cities to display.</p>
+  </li>
+  <% end %>
+</ul>
+<% else %>
+<p>There are currently no cities to display.</p>
 <% end %>
 
 <form method="post" action="/train/<%= @train.id %>/admin">
 
-    <label for="city_name">Add a city to this train route</label>
-    <input name="city_name" class="form-control" type="text">
-    <p>Time of Arrival:</p>
-    <label for="time_input">ToA</label>
-    <input type="time" name="time_input">
+  <label for="city_name">Add a city to this train route</label>
+  <input name="city_name" class="form-control" type="text">
+  <p>Time of Arrival:</p>
+  <label for="time_input">ToA</label>
+  <input type="time" name="time_input">
 
   <button type="submit" class="btn">Go!</button>
 </form>
+
+<form action="/train/<%= @train.id %>/admin" method="post">
+  <input name="_method" type="hidden" value="delete">
+  <button type="submit">Delete <%= @train.name %></button>
+</form>
+
+<a href="/train/<%= @train.id %>/update">Update Train: <%= @train.name %></a>

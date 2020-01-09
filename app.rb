@@ -61,6 +61,11 @@ get('/trains/new') do
   erb(:admin_create_train)
 end
 
+get('/train/:id/update') do
+  @train = Train.find(params[:id])
+  erb(:admin_update_train)
+end
+
 get('/trains/admin') do
   @trains = Train.all
   erb(:admin_trains)
@@ -94,6 +99,20 @@ post '/train/:id/admin' do
   erb(:admin_train)
 end
 
+delete '/train/:id/admin' do
+  @train = Train.find(params[:id].to_i())
+  @train.delete()
+  @trains = Train.all()
+  erb(:admin_trains)
+end
+
+patch('/trains/:id/admin') do
+  @train = Train.find(params[:id].to_i())
+  @cities = @train.cities
+  @train.update({:name => params[:name], :city_name => nil, :stop_time => nil})
+  erb(:admin_train)
+end
+
 ############################## Cities
 get('/cities/admin') do
   @cities = City.all
@@ -112,6 +131,11 @@ post '/cities/admin' do
   erb(:admin_cities)
 end
 
+get('/city/:id/update') do
+  @city = City.find(params[:id])
+  erb(:admin_update_city)
+end
+
 get '/city/:id/admin' do
   @city = City.find(params[:id])
   @trains = @city.trains
@@ -126,4 +150,19 @@ post '/city/:id/admin' do
   @city.update({:name => @city.name, :train_name => name, :stop_time => time})
   @trains = @city.trains
   erb(:admin_city)
+end
+
+patch('/cities/:id/admin') do
+  @city = City.find(params[:id].to_i())
+  @trains = @city.trains
+  name = params[:name]
+  @city.update({:name => name, :train_name => nil, :stop_time => nil})
+  erb(:admin_city)
+end
+
+delete '/city/:id/admin' do
+  @city = City.find(params[:id].to_i())
+  @city.delete()
+  @cities = City.all()
+  erb(:admin_cities)
 end
