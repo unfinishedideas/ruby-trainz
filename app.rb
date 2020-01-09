@@ -86,6 +86,7 @@ end
 
 get '/train/:id/admin' do
   @train = Train.find(params[:id])
+  @all_cities = City.all
   @cities = @train.cities
   erb(:admin_train)
 end
@@ -94,6 +95,7 @@ post '/train/:id/admin' do
   name = params[:city_name]
   time = (params[:time_input] + ":00")
   @train = Train.find(params[:id])
+  @all_cities = City.all
   @train.update({:name => @train.name, :city_name => name, :stop_time => time})
   @cities = @train.cities
   erb(:admin_train)
@@ -109,6 +111,7 @@ end
 patch('/trains/:id/admin') do
   @train = Train.find(params[:id].to_i())
   @cities = @train.cities
+  @all_cities = City.all
   @train.update({:name => params[:name], :city_name => nil, :stop_time => nil})
   erb(:admin_train)
 end
@@ -139,11 +142,12 @@ end
 get '/city/:id/admin' do
   @city = City.find(params[:id])
   @trains = @city.trains
-  # binding.pry
+  @all_trains = Train.all
   erb(:admin_city)
 end
 
 post '/city/:id/admin' do
+  @all_trains = Train.all
   name = params[:train_name]
   time = (params[:time_input] + ":00")
   @city = City.find(params[:id])
@@ -153,6 +157,7 @@ post '/city/:id/admin' do
 end
 
 patch('/cities/:id/admin') do
+  @all_trains = Train.all
   @city = City.find(params[:id].to_i())
   @trains = @city.trains
   name = params[:name]

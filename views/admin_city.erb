@@ -13,19 +13,24 @@
 <% else %>
 <p>There are currently no trains to display.</p>
 <% end %>
+<hr>
+<a href="/city/<%= @city.id %>/update">Update: <%= @city.name %></a><br><br>
 
 <form method="post" action="/city/<%= @city.id %>/admin">
   <label for="train_name">Add a train arrival to this city</label>
-  <input name="train_name" class="form-control" type="text">
+  <select name="train_name">
+    <% @all_trains.each do |train| %>
+      <option value="<%= train.name %>"><%= train.name %></option>
+    <% end %>
+  </select>
+  <!-- <input name="train_name" class="form-control" type="text"> -->
   <p>Time of Arrival:</p>
   <label for="time_input">ToA</label>
   <input type="time" name="time_input">
   <button type="submit" class="btn">Go!</button>
 </form>
-
+<br>
 <form action="/city/<%= @city.id %>/admin" method="post">
   <input name="_method" type="hidden" value="delete">
   <button type="submit">Delete <%= @city.name %></button>
 </form>
-
-<a href="/city/<%= @city.id %>/update">Update City: <%= @city.name %></a>
