@@ -82,5 +82,4 @@ class Train
     end
     cities_array_2
   end
-
 end

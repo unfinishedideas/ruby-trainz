@@ -13,12 +13,13 @@
   text-shadow: 2px 2px 2px black;
 }
 
-body {
+html, body {
   background-color: rgb(20,20,20);
   background-image: url('/img/tracks.png');
   background-size: 200px;
   color: #D4DFC7;
   font-size: 20px;
+  height: 100%;
 }
 
 a {
@@ -34,11 +35,13 @@ h3 {
 
 .container {
   background-color: #725752;
+  /* background-color: red; */
   padding: 10%;
   padding-top: 20px;
-  margin: 15%;
+  margin: 5%;
   border: 20px rgb(60,60,60) solid;
   border-radius: 15px;
+  height: 100%;
 }
 /* label {
 color: #D4DFC7

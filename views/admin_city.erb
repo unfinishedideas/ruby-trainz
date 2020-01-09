@@ -13,6 +13,8 @@
 <% else %>
 <p>There are currently no trains to display.</p>
 <% end %>
+
+
 <hr>
 <a href="/city/<%= @city.id %>/update">Update: <%= @city.name %></a><br><br>
 
@@ -23,7 +25,6 @@
       <option value="<%= train.name %>"><%= train.name %></option>
     <% end %>
   </select>
-  <!-- <input name="train_name" class="form-control" type="text"> -->
   <p>Time of Arrival:</p>
   <label for="time_input">ToA</label>
   <input type="time" name="time_input">
