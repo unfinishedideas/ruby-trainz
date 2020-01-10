@@ -17,4 +17,4 @@ _(email for inquiries)_
 
 ---
 
-_"gosh dammit"_ - The Developers
+_"gosh dammit....."_ - The Developers
